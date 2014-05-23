@@ -17,6 +17,7 @@
 
 $(document).ready(function() {
   var markers = [];
+  var prev_infowindow = false;
 
   function initialize() {
     //just a variable storing a location
@@ -33,7 +34,8 @@ $(document).ready(function() {
         for (var i in data) {        
           addPin(data[i].lat, data[i].long);      
         }    
-      });  
+      }); 
+
     }
     loadPins();
 
@@ -49,6 +51,18 @@ $(document).ready(function() {
         map: map
 
       });
+
+      var infowindow = new google.maps.InfoWindow({
+        content: "Created by: " + gon.email_id
+      });
+
+      google.maps.event.addListener(newMarker, 'click', function() {
+        if (prev_infowindow) {
+          prev_infowindow.close();
+        }
+        prev_infowindow = infowindow;
+        infowindow.open(map, newMarker);
+      }); 
     };
 
     google.maps.event.addListener(map, "click", function(event) {
@@ -58,6 +72,7 @@ $(document).ready(function() {
       var long = event.latLng.k;
       var email = gon.email_id;
       var url = "/pins.json";
+
       $.ajax(url, {
         // url: '/pins.json', // action: "/contacts",
         type: 'post',
@@ -79,7 +94,9 @@ $(document).ready(function() {
       })
 
     });
+
   };
+
   //code loads the map
   google.maps.event.addDomListener(window, 'load', initialize);
 
