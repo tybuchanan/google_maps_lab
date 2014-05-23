@@ -14,7 +14,7 @@
 ActiveRecord::Schema.define(version: 20140523023920) do
 
   create_table "pins", force: true do |t|
-    t.integer  "email_id"
+    t.string  "email_id"
     t.float    "lat"
     t.float    "long"
     t.datetime "created_at"

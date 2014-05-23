@@ -3,12 +3,10 @@ class PinsController < ApplicationController
 
   def index
     @pins = Pin.all
-    @pin = Pin.new
-    @current_user = current_user
-
+    gon.push({:email_id => current_user.email})
     respond_to do |f|
-        f.html 
-        f.json { render :json => @pins, :only => [:lat, :long, :email]}
+      f.html {render :index}
+      f.json { render :json => @pins, :only => [:lat, :long, :email_id]}
     end
   end
 
@@ -17,20 +15,20 @@ class PinsController < ApplicationController
   end
 
   def create
-    @pin = Pin.create pin_params
+    @pin = Pin.new pin_params
     if @pin.save  
       respond_to do |f|
         f.html
-        f.json { render :json => @pin, :only => [:lat, :long, :email]}
+        format.json { render json: @pin, status: :created}
       end
-    # else
-    #   render :index
+    else
+        format.json { render json: @pin.errors, status: :unprocessable_entity}
     end
   end
 
 private
   def pin_params
-    params.require(:pin).permit(:lat, :long, :email)
+    params.require(:pin).permit(:lat, :long, :email_id)
   end
 end
 

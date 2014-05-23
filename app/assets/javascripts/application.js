@@ -24,7 +24,7 @@ $(document).ready(function() {
       center: new google.maps.LatLng(32.7758, 96.7967),
       zoom: 2
     };
-
+    // alert(gon.current_user)
     var loadPins = function() {    
       var url = "/pins.json";    
       $.ajax(url, {
@@ -56,9 +56,10 @@ $(document).ready(function() {
 
       var lat = event.latLng.A;
       var long = event.latLng.k;
-      var email = $('.taco').val('#current_user.email');
-      $.ajax({
-        url: '/pins.json', // action: "/contacts",
+      var email = gon.email_id;
+      var url = "/pins.json";
+      $.ajax(url, {
+        // url: '/pins.json', // action: "/contacts",
         type: 'post',
 
         data: {
@@ -67,8 +68,8 @@ $(document).ready(function() {
           {
             lat: lat,
             long: long,
+            email_id: gon.email_id
 
-            // "email": current_user.email
           }
         },
         dataType: "json",
