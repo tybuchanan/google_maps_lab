@@ -21,8 +21,8 @@ $(document).ready(function() {
   function initialize() {
     //just a variable storing a location
     var mapOptions = {
-      center: new google.maps.LatLng(-34.397, 150.644),
-      zoom: 8
+      center: new google.maps.LatLng(32.7758, 96.7967),
+      zoom: 2
     };
 
     var loadPins = function() {    
@@ -40,32 +40,35 @@ $(document).ready(function() {
     var map = new google.maps.Map(document.getElementById("map-canvas"),
       mapOptions);
 
-    var loc;
 
     function addPin(lat, long) {
-      loc = new google.maps.LatLng(lat, long);
+      var loc = new google.maps.LatLng(lat, long);
       console.log(loc);
       var newMarker = new google.maps.Marker({
         position: loc,
         map: map
-        // email: email (devise)?
+
       });
     };
-
 
     google.maps.event.addListener(map, "click", function(event) {
       addPin(event.latLng.A, event.latLng.k);
 
-
+      var lat = event.latLng.A;
+      var long = event.latLng.k;
+      var email = $('.taco').val('#current_user.email');
       $.ajax({
-        url: form - group.attr('action'), // action: "/contacts",
-        method: form.attr('method'), // method: "/post"
+        url: '/pins.json', // action: "/contacts",
+        type: 'post',
+
         data: {
-          "pin":
+          pin:
 
           {
-            "lat": lat,
-            "long": long,
+            lat: lat,
+            long: long,
+
+            // "email": current_user.email
           }
         },
         dataType: "json",
@@ -75,9 +78,6 @@ $(document).ready(function() {
       })
 
     });
-    // google.maps.event.addListener(map, "click", function(event) {
-    //   addPin(event.latLng.A, event.latLng.k);
-    // });
   };
   //code loads the map
   google.maps.event.addDomListener(window, 'load', initialize);
